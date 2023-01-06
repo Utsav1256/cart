@@ -34,6 +34,19 @@ class CartItem extends React.Component {
         });
     }
 
+    decreaseQuantity = () => {
+        // console.log('test')
+        const { qty } = this.state; // grabbing the 'qty' from 'state', we are using 'Object Destructuring'
+        if(qty === 0) {
+            return;
+        }
+        this.setState((prevState) => {
+            return {
+                qty: prevState.qty - 1
+            }
+        });
+    }
+
     render() { 
         const {price, title, qty} = this.state; 
         return( 
@@ -60,6 +73,7 @@ class CartItem extends React.Component {
                             alt='decrease' 
                             className='action-icons' 
                             src='https://cdn-icons-png.flaticon.com/512/992/992683.png' 
+                            onClick = {this.decreaseQuantity}
                         />
                         <img 
                             alt='delete' 
