@@ -1,10 +1,11 @@
 
-
+import CartItem from "./CartItem";  // importing cart item from CartItem.js
 
 function App() {
   return (
     <div className="App">
-      <h1>Cart</h1>
+      
+       <CartItem /> {/*now we are using 'CartItem' component over here */}
     </div>
   );
 }
