@@ -1,22 +1,34 @@
-import React from 'react'; //importing React from the React package
+import React from 'react'; 
 
-//creating our very 1st class component -> name: CartItem -> {using camelCase}
-class CartItem extends React.Component { // we are inheriting using 'extends' keyword from a class called 'Component' inside the 'React' package -> for cartItem
-                                             // so this is a class based component, whereas 'App' is a functional based component
-    render() { // for a class component to get React component we need to give it one method -> render()
-        return( // and this render() method should return some jsx that will basically describe the UI for that component
-        // here we  write some jsx code
+class CartItem extends React.Component {
+
+    constructor() { //defining state
+        super(); // in js whenever you are inheriting from another class -> we 1st need to call the constructor of that parent class -> by calling 'super()'
+        this.state = {
+            price: 999,
+            title: 'Phone',
+            qty: 1,
+            img: ''
+        }
+    }
+
+    render() { 
+        const {price, title, qty} = this.state; // Object Destructuring
+        return( 
             <div className='cart-item'>
                 <div className='left-block'>
-                     <img style={styles.image} /> {/* in style = {}-> in this bracket we can write js code, styles.image -> passing 'styles' object with 'image' property */}
+                     <img style={styles.image} /> 
                 </div>
                 <div className='right-block'>
-                     <div style={ { fontSize: 25 } }>Phone</div> {/*  { fontSize: 25 }-> passing an object with style*/}
-                    <div style={ { color: '#777' } }>Rs 999</div>
-                    <div style={ { color: '#777' } }>Qty : 1</div>
+                     <div style={ { fontSize: 25 } }> {title} </div>       {/* {this.state.title} */}
+                    <div style={ { color: '#777' } }>Rs {price} </div>
+                    <div style={ { color: '#777' } }>Qty : {qty} </div>
                     
                     <div className='cart-item-actions'>
                         {/* Buttons */}
+                        <img alt='increase' className='action-icons' src='https://cdn-icons-png.flaticon.com/512/992/992651.png' />
+                        <img alt='decrease' className='action-icons' src='https://cdn-icons-png.flaticon.com/512/992/992683.png' />
+                        <img alt='delete' className='action-icons' src='https://cdn-icons-png.flaticon.com/512/1214/1214428.png' />
                     </div>
                 </div>
             </div>
@@ -24,13 +36,13 @@ class CartItem extends React.Component { // we are inheriting using 'extends' ke
     }
 }
 // in jsx we can style our elements using objects
-const styles = { // creating 'styles' object
-    image: { // giving properties(image ia a property) to object
-        height: 110, // adding styles
-        width: 110, // we don't need to add pixels(px) over here javascrpt will add automatically for us
-        borderRadius: 4, // we are using 'commas' bcz, it is an javascript object
-        background: '#ccc' // we are using 'camelCase' becz. in js we cannot do 'back-radius'
+const styles = { 
+    image: { 
+        height: 110, 
+        width: 110, 
+        borderRadius: 4, 
+        background: '#ccc' 
     }
 }
-// exporting the (CartItem) component -> and we will import it in my 'App' component
+
 export default CartItem;
