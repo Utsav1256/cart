@@ -10,12 +10,28 @@ class CartItem extends React.Component {
             qty: 1,
             img: ''
         }
-        // this.increaseQuantity = this.increaseQuantity.bind(this); -> if we have multiple event handlers (like onClick ) we can bind it over here in the constructor
     }
 
-    // Defining 'increaseQuantity' function
-    increaseQuantity = () => { // we can use arrow fn. -> it will automatically bind the value of 'this' to the instance of to instace of 'cartItem' clsaa
-        console.log('this.state', this.state);
+    
+    increaseQuantity = () => { 
+        // this.state.qty += 1; // it is increasing our 'qty' by 1, but React does not know that this 'qty' is increasing, so id does not refresh or rerender our component, thats why we see the old value. 
+                                                        // So, we have to tell 'React' that, Hey! we want to increase this 'qty', then please re-render our component. 
+                                                        // And to do that 'React' gives us a function called 'setState()'and it s inherited from the 'Component' and we can use simply in our component.
+        // console.log('this.state', this.state);
+
+        // two ways to call setState fn.
+        // setState form 1   // let's say if we simply want to chane the title, no previous state required, then we will use this form
+        // this.setState({
+        //     qty: this.state.qty + 1  // this.state.qty -> by this we get the current 'qty' 
+                                        // it will do 'shallow merging', it will only chage the 'qty' in the state and don't touch other properties
+        // });
+
+        // setState form 2  // when we require the 'previous state', we will use this form
+        this.setState((previousState) => { // we are passing a fn.
+            return {
+                qty: previousState.qty + 1 // previousState -> by this we get the current 'qty' 
+            }
+        });
     }
 
     render() { 
