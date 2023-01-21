@@ -14,29 +14,17 @@ class CartItem extends React.Component {
 
     
     increaseQuantity = () => { 
-        // this.state.qty += 1; // it is increasing our 'qty' by 1, but React does not know that this 'qty' is increasing, so id does not refresh or rerender our component, thats why we see the old value. 
-                                                        // So, we have to tell 'React' that, Hey! we want to increase this 'qty', then please re-render our component. 
-                                                        // And to do that 'React' gives us a function called 'setState()'and it s inherited from the 'Component' and we can use simply in our component.
-        // console.log('this.state', this.state);
-
-        // two ways to call setState fn.
-        // setState form 1   // let's say if we simply want to chane the title, no previous state required, then we will use this form
-        // this.setState({
-        //     qty: this.state.qty + 1  // this.state.qty -> by this we get the current 'qty' 
-                                        // it will do 'shallow merging', it will only chage the 'qty' in the state and don't touch other properties
-        // });
-
-        // setState form 2  // when we require the 'previous state', we will use this form
-        this.setState((previousState) => { // we are passing a fn.
+        // console.log('test')
+        this.setState((previousState) => { 
             return {
-                qty: previousState.qty + 1 // previousState -> by this we get the current 'qty' 
+                qty: previousState.qty + 1 
             }
         });
     }
 
     decreaseQuantity = () => {
         // console.log('test')
-        const { qty } = this.state; // grabbing the 'qty' from 'state', we are using 'Object Destructuring'
+        const { qty } = this.state; 
         if(qty === 0) {
             return;
         }
