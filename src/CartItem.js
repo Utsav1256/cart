@@ -6,6 +6,14 @@ class CartItem extends React.Component {
     console.log('this.props', this.props.product);
     const { price, title, qty } = this.props.product;
     // logging the product prop passed to the CartItem component, using console.log(). The product prop is being destructured to extract the price, title, and qty properties.
+    const {
+      product,
+      onIncreaseQuantity,
+      onDecreaseQuantity,
+      onDeleteProduct
+    } = this.props;
+    // using object destructuring syntax to extract the product, onIncreaseQuantity, onDecreaseQuantity, and onDeleteProduct props from the props object that was passed down to the CartItem component.
+    
     return (
       <div className="cart-item">
         <div className="left-block">
@@ -22,7 +30,7 @@ class CartItem extends React.Component {
               alt="increase"
               className="action-icons"
               src="https://cdn-icons-png.flaticon.com/512/992/992651.png"
-              onClick={() => this.props.onIncreaseQuantity(this.props.product)}
+              onClick={() => onIncreaseQuantity(product)}
               
             />
 
@@ -30,12 +38,13 @@ class CartItem extends React.Component {
               alt="decrease"
               className="action-icons"
               src="https://cdn-icons-png.flaticon.com/512/992/992683.png"
-              onClick={() => this.props.onDecreaseQuantity(this.props.product)}
+              onClick={() => onDecreaseQuantity(product)}
             />
             <img
               alt="delete"
               className="action-icons"
               src="https://cdn-icons-png.flaticon.com/512/1214/1214428.png"
+              onClick= {() => onDeleteProduct(product.id)}
             />
           </div>
         </div>

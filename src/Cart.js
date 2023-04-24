@@ -56,6 +56,24 @@ class Cart extends React.Component {
     })
 
   }
+  handleDeleteProduct = (id) => {
+    const {products} = this.state; //retrieving the products array from the component's state
+    const items = products.filter((item) => item.id !== id);
+    // In the products.filter() method, item is a variable that represents each element of the products array one by one.
+
+    // So, for each iteration of the filter method, the item variable represents one element of the products array, and then the filter method applies the condition provided inside the parentheses to check if the item.id is not equal to the id parameter. If the condition is true, it keeps that element in the new items array, and if it is false, it removes that element from the new items array.
+    this.setState({
+      products: items
+    })
+  }
+  // the handleDeleteProduct function is defined to handle the deletion of a product from the cart.
+
+  // First, it retrieves the products array from the component's state. Then, it uses the filter method to create a new array called items that includes all the products except the one with the id that was passed to the function.
+  
+  // Finally, the setState method is called to update the component's state by setting the products array to the new items array without the deleted product.
+  
+  // Overall, this function deletes a product from the cart by updating the component's state.
+
   render() {
     const {products} = this.state;
     return (
@@ -69,6 +87,7 @@ class Cart extends React.Component {
             key={product.id} 
             onIncreaseQuantity = {this.handleIncreaseQuantity}
             onDecreaseQuantity = {this.handleDecreaseQuantity}
+            onDeleteProduct = {this.handleDeleteProduct}
           />
           )
          })
