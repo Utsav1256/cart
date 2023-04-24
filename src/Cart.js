@@ -1,105 +1,29 @@
-import React from "react";
-import CartItem from "./CartItem";
+import React from "react"; // Imports the necessary React library to define a component.
+import CartItem from "./CartItem"; // Imports the CartItem component that will be used inside the Cart component.
 
-class Cart extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      products: [
-        {
-          price: 99,
-          title: "Watch",
-          qty: 1,
-          img: "",
-          id: 1,
-        },
-        {
-          price: 999,
-          title: "Phone",
-          qty: 1,
-          img: "",
-          id: 2,
-        },
-        {
-          price: 9999,
-          title: "Laptop",
-          qty: 1,
-          img: "",
-          id: 3,
-        }
-      ]
-    };
-  }
-
-  handleIncreaseQuantity = (product) => {
-    console.log('Hey please inc the qty of ', product);
-    const {products} = this.state;
-    const index = products.indexOf(product);
-
-    products[index].qty += 1;
-
-    this.setState({
-      products: products
-    })
-  }
-  handleDecreaseQuantity = (product) => {
-    const {products} = this.state; //retrieving the products array from the component's state
-    const index = products.indexOf(product); // finding the index of the product argument within the array
-
-    if(products[index].qty == 0) {
-      return;
-    }
-    products[index].qty -= 1; // decreasing the qty property of the product by 1.
-
-    this.setState({
-      products: products //updating the products array in the component's state with the modified product object
-    })
-
-  }
-  handleDeleteProduct = (id) => {
-    const {products} = this.state; //retrieving the products array from the component's state
-    const items = products.filter((item) => item.id !== id);
-    // In the products.filter() method, item is a variable that represents each element of the products array one by one.
-
-    // So, for each iteration of the filter method, the item variable represents one element of the products array, and then the filter method applies the condition provided inside the parentheses to check if the item.id is not equal to the id parameter. If the condition is true, it keeps that element in the new items array, and if it is false, it removes that element from the new items array.
-    this.setState({
-      products: items
-    })
-  }
-  // the handleDeleteProduct function is defined to handle the deletion of a product from the cart.
-
-  // First, it retrieves the products array from the component's state. Then, it uses the filter method to create a new array called items that includes all the products except the one with the id that was passed to the function.
+const Cart = (props) => { // Defines a functional component named Cart that accepts a props object as its argument.
   
-  // Finally, the setState method is called to update the component's state by setting the products array to the new items array without the deleted product.
-  
-  // Overall, this function deletes a product from the cart by updating the component's state.
-
-  render() {
-    const {products} = this.state;
-    return (
-      // jsx
-      <div className="cart">
-        {/* we are accessing CartItem component inside Cart component */}
-        {products.map((product) => {
-          return (
-          <CartItem 
-            product={product} 
-            key={product.id} 
-            onIncreaseQuantity = {this.handleIncreaseQuantity}
-            onDecreaseQuantity = {this.handleDecreaseQuantity}
-            onDeleteProduct = {this.handleDeleteProduct}
-          />
-          )
-         })
-        }
-      </div>
-    );
-  }
-
-
-
-
+  const {products} = props; // Destructures the products array from the props object passed to the Cart component.
+  return ( //  Returns the JSX code to render the Cart component.
+    // jsx
+    <div className="cart">
+      {/* we are accessing CartItem component inside Cart component */}
+      {products.map((product) => { //  iterate over each product in the products array
+        return (
+        <CartItem 
+          product={product} // Passes the current product object as the product prop to the CartItem component.
+          key={product.id}  // Passes a unique identifier based on the current product object's id property to the CartItem component.
+          onIncreaseQuantity = {props.onIncreaseQuantity}
+          onDecreaseQuantity = {props.onDecreaseQuantity}
+          onDeleteProduct = {props.onDeleteProduct}
+          // passing down the props onIncreaseQuantity, onDecreaseQuantity, and onDeleteProduct to the CartItem component from the Cart component.
+        />
+        )
+        })
+      }
+    </div>
+  );
 
 }
-export default Cart;
+export default Cart; // Exports the Cart component for use in other parts of the application.
 
