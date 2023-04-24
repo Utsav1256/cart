@@ -1,15 +1,7 @@
 import React from "react";
 
 class CartItem extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      price: 999,
-      title: "Phone",
-      qty: 1,
-      img: "",
-    };
-  }
+  
 
   increaseQuantity = () => {
     // console.log('test')
@@ -34,7 +26,9 @@ class CartItem extends React.Component {
   };
 
   render() {
-    const { price, title, qty } = this.state;
+    console.log('this.props', this.props.product);
+    const { price, title, qty } = this.props.product;
+    //This code is logging the product prop passed to the CartItem component, using console.log(). The product prop is being destructured to extract the price, title, and qty properties.
     return (
       <div className="cart-item">
         <div className="left-block">
