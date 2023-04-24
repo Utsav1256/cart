@@ -13,21 +13,21 @@ class App extends React.Component {
           price: 99,
           title: "Watch",
           qty: 1,
-          img: "",
+          img: "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fHdhdGNofGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=600&q=60",
           id: 1,
         },
         {
           price: 999,
           title: "Phone",
           qty: 1,
-          img: "",
+          img: "https://images.unsplash.com/photo-1605236453806-6ff36851218e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTh8fG1vYmlsZSUyMHBob25lfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=600&q=60",
           id: 2,
         },
         {
           price: 9999,
           title: "Laptop",
           qty: 1,
-          img: "",
+          img: "https://images.unsplash.com/photo-1602080858428-57174f9431cf?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=951&q=80",
           id: 3,
         }
       ]
@@ -78,17 +78,32 @@ class App extends React.Component {
     return count; //  returns the final count value
   }
 
+  getCartTotal = () => {
+    const {products} = this.state;
+
+    let cartTotal = 0;
+
+    products.forEach((product) => { //  Iterating over each product in the products array
+      cartTotal =  cartTotal + (product.qty * product.price) // Calculating the total cost of each product by multiplying its quantity with price and adding it to cartTotal
+    })
+
+    return cartTotal;
+  }
   render() {
     const {products} = this.state;
     return (
       <div className="App">
         <Navbar count={this.getCartCount()} /> {/* passing a prop called count to the Navbar component, with the value being the result of the getCartCount() method. */}
         <Cart 
-        products={products}
-        onIncreaseQuantity = {this.handleIncreaseQuantity}
-        onDecreaseQuantity = {this.handleDecreaseQuantity}
-        onDeleteProduct = {this.handleDeleteProduct}/> {/*now we are using 'CartItem' component over here */}
+          products={products}
+          onIncreaseQuantity = {this.handleIncreaseQuantity}
+          onDecreaseQuantity = {this.handleDecreaseQuantity}
+          onDeleteProduct = {this.handleDeleteProduct}
+        /> {/*now we are using 'CartItem' component over here */}
+
+      <div style={ {padding: 10, fontSize: 20} }>Total: {this.getCartTotal()} </div>
       </div>
+      
     );
   }
 }
