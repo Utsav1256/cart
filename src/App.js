@@ -1,38 +1,41 @@
 import React from "react";
-import CartItem from "./CartItem"; // importing cart item from CartItem.js
 import Cart from "./Cart";
-import Navbar from "./Navbar"
-
+import Navbar from "./Navbar";
+// importing the Firebase app module from the "firebase/compat/app" package.
+// This package contains the new modular SDK that is compatible with the latest version of Firebase.
+import {Firestore} from "./Firebase";
 class App extends React.Component {
 
   constructor() {
     super();
     this.state = {
-      products: [
-        {
-          price: 99,
-          title: "Watch",
-          qty: 1,
-          img: "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fHdhdGNofGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=600&q=60",
-          id: 1,
-        },
-        {
-          price: 999,
-          title: "Phone",
-          qty: 1,
-          img: "https://images.unsplash.com/photo-1605236453806-6ff36851218e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTh8fG1vYmlsZSUyMHBob25lfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=600&q=60",
-          id: 2,
-        },
-        {
-          price: 9999,
-          title: "Laptop",
-          qty: 1,
-          img: "https://images.unsplash.com/photo-1602080858428-57174f9431cf?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=951&q=80",
-          id: 3,
-        }
-      ]
+      products: [],
+      loading: true
     };
   }
+
+  componentDidMount() { // a lifecycle method in a React class component that is called after the component is mounted.(i.e., rendered on the screen).
+    Firestore //  refers to the Firestore instance that was previously defined using the Firebase SDK in the module.
+     .collection("products") // This specifies the name of the Firestore collection to query. In this case, it is the "products" collection.
+     .onSnapshot((snapshot) => { // This sets up a real-time listener on the "products" collection in Firestore, which triggers a callback function whenever a change occurs in the collection. The onSnapshot method takes a callback function as an argument, which will be called whenever a change is detected in the collection.
+      // console.log("snapshot", snapshot)
+        const products = snapshot.docs.map((doc) => { // This creates a new array called products by iterating over the documents in the snapshot object (which represents the collection at the time of the snapshot) using the map() method.
+          console.log("doc", doc) //This logs the doc object to the console. The doc object represents a single document in the collection
+          const data = doc.data(); // This extracts the data from the document and stores it in the data object.
+          data["id"] = doc.id; // This adds a new property called "id" to the data object and sets its value to the id of the document. it will be used for deleting purpose.
+          // console.log(data);
+          return data; // This returns the data object for each document in the snapshot array. The map() method creates a new array by applying this function to each element in the snapshot array.
+        });
+        this.setState({
+          products: products, // This updates the state of the React component by setting the products property to the new products array created by the map() method. This will trigger a re-render of the component and update the UI to display the new data.
+          loading: false
+        }) 
+
+     }) 
+  }
+
+
+    
 
   handleIncreaseQuantity = (product) => {
     console.log('Hey please inc the qty of ', product);
@@ -49,7 +52,7 @@ class App extends React.Component {
     const {products} = this.state; //retrieving the products array from the component's state
     const index = products.indexOf(product); // finding the index of the product argument within the array
 
-    if(products[index].qty == 0) {
+    if(products[index].qty === 0) {
       return;
     }
     products[index].qty -= 1; // decreasing the qty property of the product by 1.
@@ -84,13 +87,13 @@ class App extends React.Component {
     let cartTotal = 0;
 
     products.forEach((product) => { //  Iterating over each product in the products array
-      cartTotal =  cartTotal + (product.qty * product.price) // Calculating the total cost of each product by multiplying its quantity with price and adding it to cartTotal
+      cartTotal =  cartTotal + (product.qty * product.price); // Calculating the total cost of each product by multiplying its quantity with price and adding it to cartTotal
     })
 
     return cartTotal;
   }
   render() {
-    const {products} = this.state;
+    const {products, loading} = this.state;
     return (
       <div className="App">
         <Navbar count={this.getCartCount()} /> {/* passing a prop called count to the Navbar component, with the value being the result of the getCartCount() method. */}
@@ -100,8 +103,8 @@ class App extends React.Component {
           onDecreaseQuantity = {this.handleDecreaseQuantity}
           onDeleteProduct = {this.handleDeleteProduct}
         /> {/*now we are using 'CartItem' component over here */}
-
-      <div style={ {padding: 10, fontSize: 20} }>Total: {this.getCartTotal()} </div>
+        {loading && <h1>Loading Products ...</h1>}
+      <div style={ {padding: 10, fontSize: 20} }>Total: Rs {this.getCartTotal()} </div>
       </div>
       
     );
