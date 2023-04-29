@@ -17,6 +17,9 @@ class App extends React.Component {
   componentDidMount() { // a lifecycle method in a React class component that is called after the component is mounted.(i.e., rendered on the screen).
     Firestore //  refers to the Firestore instance that was previously defined using the Firebase SDK in the module.
      .collection("products") // This specifies the name of the Firestore collection to query. In this case, it is the "products" collection.
+    //  .where("price", "<", 999)
+    //  .where("title", "==", "Goggle")
+    .orderBy("price", "desc")
      .onSnapshot((snapshot) => { // This sets up a real-time listener on the "products" collection in Firestore, which triggers a callback function whenever a change occurs in the collection. The onSnapshot method takes a callback function as an argument, which will be called whenever a change is detected in the collection.
       // console.log("snapshot", snapshot)
         const products = snapshot.docs.map((doc) => { // This creates a new array called products by iterating over the documents in the snapshot object (which represents the collection at the time of the snapshot) using the map() method.
