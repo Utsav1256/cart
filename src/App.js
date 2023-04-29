@@ -42,11 +42,24 @@ class App extends React.Component {
     const {products} = this.state;
     const index = products.indexOf(product);
 
-    products[index].qty += 1;
+    // products[index].qty += 1;
 
-    this.setState({
-      products: products
-    })
+    // this.setState({
+    //   products: products
+    // })
+
+    const docRef =  Firestore.collection("products").doc(products[index].id);
+
+    docRef
+      .update({
+        qty: products[index].qty + 1
+      })
+      .then(() => {
+        console.log("Updated Successfully");
+      })
+      .catch((error) => {
+        console.log("Error: ", error);
+      })
   }
   handleDecreaseQuantity = (product) => {
     const {products} = this.state; //retrieving the products array from the component's state
@@ -109,23 +122,13 @@ addProduct = () => {
       console.log('Error : ', error);
     })
 }
-// This code calls the add() method on a Firestore collection object.
-// The collection method takes a string argument that specifies the name of the collection to add a new document to.
-// The add() method takes an object argument that contains the data to be added to the new document.
-// In this case, the object contains four key-value pairs: img (an empty string), price (9999), qty (1), and title ("Washing Machine").
-// The then() method is called on the add() method's return value, which is a promise that resolves to a docRef object.
-// The then() method takes a callback function that is executed when the promise is resolved.
-// In this case, the callback logs a message to the console, indicating that the product has been added, along with the docRef object that was returned by the add() method.
-// The catch() method is called on the add() method's return value, which is a promise that rejects with an error object if there is an error.
-// The catch() method takes a callback function that is executed when the promise is rejected.
-// In this case, the callback logs an error message to the console, along with the error object that was returned by the add() method.
 
 render() {
     const {products, loading} = this.state;
     return (
       <div className="App">
         <Navbar count={this.getCartCount()} /> {/* passing a prop called count to the Navbar component, with the value being the result of the getCartCount() method. */}
-        <button onClick={this.addProduct} style={{padding: 20, fontSize: 20}}>Add a product</button>
+        {/* <button onClick={this.addProduct} style={{padding: 20, fontSize: 20}}>Add a product</button> */}
         <Cart 
           products={products}
           onIncreaseQuantity = {this.handleIncreaseQuantity}
