@@ -88,10 +88,21 @@ class App extends React.Component {
   }
   handleDeleteProduct = (id) => {
     const {products} = this.state; //retrieving the products array from the component's state
-    const items = products.filter((item) => item.id !== id);
-    this.setState({
-      products: items
-    })
+    // const items = products.filter((item) => item.id !== id);
+    // this.setState({
+    //   products: items
+    // })
+
+    const docRef = Firestore.collection("products").doc(id);
+
+    docRef
+      .delete()
+      .then(() => {
+        console.log("Deleted Successfully");
+      })
+      .catch((error) => {
+        console.log("Error: ", error);
+      })
   }
 
   getCartCount= () => {
